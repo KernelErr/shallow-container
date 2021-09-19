@@ -1,0 +1,23 @@
+name: shallow-container
+version: "0.1.0"
+author: LI Rui <lr_cn@outlook.com>
+about: Simple application container for linux written in Rust.
+subcommands:
+    - pull:
+        about: Pull image
+        args:
+            - image:
+                about: Image name
+                required: true
+                index: 1
+
+    - run:
+        about: Run container
+        args:
+            - image:
+                about: Image name
+                required: true
+                index: 1
+            - share_net:
+                long: Sn
+                about: Share NET namespace
