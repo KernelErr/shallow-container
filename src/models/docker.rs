@@ -1,13 +1,13 @@
-use std::collections::HashMap;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
+use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct DockerToken {
     pub token: String,
     pub access_token: String,
     pub expires_in: i32,
-    pub issued_at: String,   
+    pub issued_at: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -20,7 +20,7 @@ pub struct DockerImageConfig {
     docker_version: Option<String>,
     history: Vec<DockerImageHistory>,
     os: String,
-    rootfs: DockerImageRootfs
+    rootfs: DockerImageRootfs,
 }
 
 #[allow(non_snake_case)]

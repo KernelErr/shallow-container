@@ -1,11 +1,15 @@
-use std::fs::{create_dir_all, File};
-use flate2::read::GzDecoder;
-use tar::Archive;
-use log::{error, info};
 use crate::storage::image::load_manifest;
-use crate::storage::{IMAGE_PATH, CONTAINER_PATH};
+use crate::storage::{CONTAINER_PATH, IMAGE_PATH};
+use flate2::read::GzDecoder;
+use log::{error, info};
+use std::fs::{create_dir_all, File};
+use tar::Archive;
 
-pub fn extract_image(image: &str, tag: &str, name: &str) -> Result<String, Box<dyn std::error::Error>> {
+pub fn extract_image(
+    image: &str,
+    tag: &str,
+    name: &str,
+) -> Result<String, Box<dyn std::error::Error>> {
     let manifest = match load_manifest(image, tag) {
         Ok(manifest) => manifest,
         Err(e) => return Err(e),
@@ -40,7 +44,7 @@ pub fn extract_image(image: &str, tag: &str, name: &str) -> Result<String, Box<d
         Err(e) => {
             error!("Failed to create container directory: {}", e);
             return Err(Box::new(e));
-        },
+        }
     }
     Ok(path)
 }

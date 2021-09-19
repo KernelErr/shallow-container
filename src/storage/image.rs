@@ -1,18 +1,22 @@
+use crate::models::docker::DockerImageConfig;
+use crate::storage::IMAGE_PATH;
 use log::error;
+use oci_spec::image::ImageManifest;
+use reqwest::RequestBuilder;
 use std::fs::{create_dir_all, File};
 use std::io::prelude::*;
-use oci_spec::image::ImageManifest;
-use crate::models::docker::DockerImageConfig;
-use reqwest::RequestBuilder;
 use std::io::{copy, Cursor};
-use crate::storage::IMAGE_PATH;
 
-pub fn store_manifest(image: &str, tag: &str, content: &str) -> Result<(), Box<dyn std::error::Error>> {
+pub fn store_manifest(
+    image: &str,
+    tag: &str,
+    content: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
     let path = format!("{}/{}/{}", IMAGE_PATH, image, tag);
     match create_dir_all(path.clone()) {
         Ok(_) => {
             let output = format!("{}/{}", path, "manifest.json");
-            let mut f = match File::create(output.to_string()) {
+            let mut f = match File::create(output) {
                 Ok(f) => f,
                 Err(e) => {
                     error!("Failed to write manifest: {}", e);
@@ -23,13 +27,13 @@ pub fn store_manifest(image: &str, tag: &str, content: &str) -> Result<(), Box<d
                 Ok(_) => Ok(()),
                 Err(e) => {
                     error!("Failed to write manifest: {}", e);
-                    return Err(Box::new(e));
-                }  
+                    Err(Box::new(e))
+                }
             }
         }
         Err(e) => {
             error!("Failed to create manifest directory: {}", e);
-            return Err(Box::new(e));
+            Err(Box::new(e))
         }
     }
 }
@@ -40,17 +44,21 @@ pub fn load_manifest(image: &str, tag: &str) -> Result<ImageManifest, Box<dyn st
         Ok(manifest) => Ok(manifest),
         Err(e) => {
             error!("Failed to load manifest: {}", e);
-            return Err(Box::new(e));
+            Err(Box::new(e))
         }
     }
 }
 
-pub fn store_config(image: &str, tag: &str, content: &str) -> Result<(), Box<dyn std::error::Error>> {
+pub fn store_config(
+    image: &str,
+    tag: &str,
+    content: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
     let path = format!("{}/{}/{}", IMAGE_PATH, image, tag);
     match create_dir_all(path.clone()) {
         Ok(_) => {
             let output = format!("{}/{}", path, "config.json");
-            let mut f = match File::create(output.to_string()) {
+            let mut f = match File::create(output) {
                 Ok(f) => f,
                 Err(e) => {
                     error!("Failed to write image config: {}", e);
@@ -61,18 +69,21 @@ pub fn store_config(image: &str, tag: &str, content: &str) -> Result<(), Box<dyn
                 Ok(_) => Ok(()),
                 Err(e) => {
                     error!("Failed to write image config: {}", e);
-                    return Err(Box::new(e));
-                }  
+                    Err(Box::new(e))
+                }
             }
         }
         Err(e) => {
             error!("Failed to create image config directory: {}", e);
-            return Err(Box::new(e));
+            Err(Box::new(e))
         }
     }
 }
 
-pub fn load_config(image: &str, tag: &str) -> Result<DockerImageConfig, Box<dyn std::error::Error>> {
+pub fn load_config(
+    image: &str,
+    tag: &str,
+) -> Result<DockerImageConfig, Box<dyn std::error::Error>> {
     let path = format!("{}/{}/{}/config.json", IMAGE_PATH, image, tag);
     let mut file = match File::open(path) {
         Ok(file) => file,
@@ -92,15 +103,20 @@ pub fn load_config(image: &str, tag: &str) -> Result<DockerImageConfig, Box<dyn 
                 }
             };
             Ok(image_config)
-        },
+        }
         Err(e) => {
             error!("Failed to load image config: {}", e);
-            return Err(Box::new(e));
+            Err(Box::new(e))
         }
     }
 }
 
-pub async fn save_layer(image: &str, tag: &str, digest: &str, req: RequestBuilder) -> Result<(), Box<dyn std::error::Error>> {
+pub async fn save_layer(
+    image: &str,
+    tag: &str,
+    digest: &str,
+    req: RequestBuilder,
+) -> Result<(), Box<dyn std::error::Error>> {
     let path = format!("{}/{}/{}/layers", IMAGE_PATH, image, tag);
     match create_dir_all(path.clone()) {
         Ok(_) => {
@@ -115,7 +131,7 @@ pub async fn save_layer(image: &str, tag: &str, digest: &str, req: RequestBuilde
         }
         Err(e) => {
             error!("Failed to create layer directory: {}", e);
-            return Err(Box::new(e));
+            Err(Box::new(e))
         }
     }
 }
