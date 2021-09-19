@@ -2,7 +2,7 @@
 
 ![Shallow Container](./docs/logo.png)
 
-Shallow Container is a light-weight container tools written in Rust. It is totally for proof-of-concept and may not suit for production environment.
+Shallow Container is a light-weight container tool written in Rust. It is totally for proof-of-concept and may not suit for production environment.
 
 Shallow Container 是一款Rust编写的轻量级容器工具，用于探索在Rust中实现管理Linux命名空间等功能的可能性。请注意，本程序仅作为学习用途，其设计可能不适合生产用途，请勿在生产环境下使用。
 
@@ -31,7 +31,7 @@ Image需要是完整的scope/image:tag格式，如果为官方镜像，scope请�
 
 ## run
 
-类似的，如果想启动一个容器，请执行下面的命令：
+类似的，如果想启动一个容器，请执行下面的命令，如果没找到镜像会先尝试pull：
 
 ```bash
 $ sudo ./target/debug/shallow-container run library/hello-world:latest
