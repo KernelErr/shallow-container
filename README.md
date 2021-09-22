@@ -6,6 +6,8 @@ Shallow Container is a light-weight container tool written in Rust. It is totall
 
 Shallow Container 是一款Rust编写的轻量级容器工具，用于探索在Rust中实现管理Linux命名空间等功能的可能性。请注意，本程序仅作为学习用途，其设计可能不适合生产用途，请勿在生产环境下使用。
 
+在开发本项目时并没有考虑到诸多方面，致使本项目更像是一个玩具，如果需要细致了解Docker的原理，推荐研究Linux Namespace、cgroups、aufs等知识。
+
 ## 概念
 
 Rust是一门非常棒的编程语言，在这入门后不到一年的时间，我逐渐感受到了Rust的魅力，并尝试以Rust为切入点去理解后端框架、操作系统等应用。Shallow Container（简称SC）是100% Rust编写的轻型容器工具，目前支持下面的功能：
